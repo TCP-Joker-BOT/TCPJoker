@@ -2,7 +2,7 @@ from datetime import datetime as dt
 
 
 LOG_NAME = 'bot.log'
-LOG_FILE = open(LOG_NAME, 'a')
+LOG_FILE = open(LOG_NAME, 'a', encoding='utf-8')
 
 
 def curr_time():
