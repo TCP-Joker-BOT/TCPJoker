@@ -6,7 +6,7 @@ LOG_FILE = open(LOG_NAME, 'a')
 
 
 def curr_time():
-    return '{}:{}:{}'.format(dt.now().hour, dt.now().minute, dt.now().second)
+    return '{:02d}:{:02d}:{:02d}'.format(dt.now().hour, dt.now().minute, dt.now().second)
 
 
 def info(message):
