@@ -10,10 +10,10 @@ import traceback
 
 def run(message):
     try:
-        data = json.load(open("modules/joke.json", "r"))
+        data = json.load(open("modules/joke.json", "r", encoding="utf-8"))
         logger.info("Loaded config")
     except FileNotFoundError:
-        with open("modules/joke.json", "w") as fl:
+        with open("modules/joke.json", "w", encoding="utf-8") as fl:
             data = {
                 "hivemind": False,
                 "admins": [
@@ -38,7 +38,7 @@ def run(message):
             logger.info("Add request...")
             if (data["hivemind"] or message["from"]["id"] in data["admins"]):
                 data["jokes"].append(" ".join(msg[2:]))
-                with open("modules/joke.json", "w") as fl:
+                with open("modules/joke.json", "w", encoding="utf-8") as fl:
                     fl.write(json.dumps(data))
                 logger.info("Add request granted")
                 return "Thx for your great joke!"
