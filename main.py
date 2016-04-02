@@ -33,7 +33,7 @@ def proceed_message(message_object):
     return module.run(message_object)
 
 def send_answer(text, chat_id):
-    logger.info('Sending answer: ' + text)
+    logger.info('Sending answer: "' + text + '" to the chat ' + str(chat_id))
     do_telegram_request('sendMessage', chat_id=chat_id, text=text)
 
 def main():
@@ -43,7 +43,8 @@ def main():
     update_id = hook_data['update_id']
     message_object = hook_data['message']
     answer = proceed_message(message_object) 
-    send_answer(answer, message_object['chat'])
+    logger.info('Created answer: ' + answer)
+    send_answer(answer, message_object['chat']['id'])
 
 if __name__ == '__main__':
     try:
