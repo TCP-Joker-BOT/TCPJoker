@@ -13,7 +13,7 @@ URL_BASE = 'https://api.telegram.org/bot'
 
 def do_telegram_request(method, **data):
     config = ConfigParser(CONFIG_FILE_NAME)
-    req = urllib.request.Request(URL_BASE + config.get_token() + '/' + message + '/' + method, headers={'Content-Type': 'application/json'})
+    req = urllib.request.Request(URL_BASE + config.get_token() + '/' + method, headers={'Content-Type': 'application/json'})
     json_data = json.dumps(data)
     urllib.request.urlopen(req, json_data.encode('utf-8'))
 
