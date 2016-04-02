@@ -1,2 +1,3 @@
 *.pyc
+*.json
 bot.log
