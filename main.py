@@ -4,6 +4,7 @@ import sys
 import json
 import re
 import urllib.request
+import logger
 from configparser import ConfigParser
 
 
@@ -23,15 +24,20 @@ def proceed_message(message_object):
     if message_command[0] != '/' or message_command == '':
         raise ValueError
     message_command = message_command[1:]
+    logger.info('Command: ' + message_command)
     config = ConfigParser(CONFIG_FILE_NAME)
     module_name = config.get_command_dict()[message_command]
-    module = __import__(module_name)
+    logger.info('Command found in config')
+    module = getattr(__import__('modules.' + module_name), module_name) # Black python magic
+    logger.info('Module successfully imported')
     return module.run(message_object)
 
 def send_answer(text, chat_id):
+    logger.info('Sending answer: ' + text)
     do_telegram_request('sendMessage', chat_id=chat_id, text=text)
 
 def main():
+    logger.info('Got request')
     hook_data_raw = sys.stdin.read()
     hook_data = json.loads(hook_data_raw)
     update_id = hook_data['update_id']
@@ -40,5 +46,8 @@ def main():
     send_answer(answer, message_object['chat'])
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception:
+        logger.error('Incorrect exit')
 
