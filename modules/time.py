@@ -2,4 +2,4 @@ from datetime import datetime as dt
 
 
 def run(_):
-    return '{} : {}'.format(dt.now().hour, dt.now().minute)
+    return '{:02d} : {:02d}'.format(dt.now().hour, dt.now().minute)
