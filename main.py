@@ -5,6 +5,7 @@ import json
 import re
 import urllib.request
 import logger
+import traceback
 from configparser import ConfigParser
 
 
@@ -54,4 +55,5 @@ if __name__ == '__main__':
     try:
         main()
     except Exception:
+        logger.error(traceback.format_exc())
         logger.error('Incorrect exit')
