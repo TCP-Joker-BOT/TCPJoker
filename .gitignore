@@ -7,6 +7,7 @@
 *.o
 *.so
 *.pyc
+__pycache__
 
 # Packages #
 ############
@@ -24,6 +25,7 @@
 # Logs and databases #
 ######################
 *.log
+*.cfg
 *.sql
 *.sqlite
 
@@ -36,5 +38,4 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
-*.cfg
-__pycache__
+
