@@ -18,6 +18,7 @@ def do_telegram_request(method, **data):
     json_data = json.dumps(data)
     urllib.request.urlopen(req, json_data.encode('utf-8'))
 
+
 def proceed_message(message_object):
     message_text = message_object['text']
     message_command = re.sub('^(.*?)[\\s@].*', '\\1', message_text)
@@ -28,13 +29,15 @@ def proceed_message(message_object):
     config = ConfigParser(CONFIG_FILE_NAME)
     module_name = config.get_command_dict()[message_command]
     logger.info('Command found in config')
-    module = getattr(__import__('modules.' + module_name), module_name) # Black python magic
+    module = getattr(__import__('modules.' + module_name), module_name)  # Black python magic
     logger.info('Module successfully imported')
     return module.run(message_object)
+
 
 def send_answer(text, chat_id):
     logger.info('Sending answer: "' + text + '" to the chat ' + str(chat_id))
     do_telegram_request('sendMessage', chat_id=chat_id, text=text)
+
 
 def main():
     logger.info('Got request')
@@ -42,13 +45,13 @@ def main():
     hook_data = json.loads(hook_data_raw)
     update_id = hook_data['update_id']
     message_object = hook_data['message']
-    answer = proceed_message(message_object) 
+    answer = proceed_message(message_object)
     logger.info('Created answer: ' + answer)
     send_answer(answer, message_object['chat']['id'])
+
 
 if __name__ == '__main__':
     try:
         main()
     except Exception:
         logger.error('Incorrect exit')
-
