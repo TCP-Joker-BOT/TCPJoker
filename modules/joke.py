@@ -2,11 +2,13 @@
 import random
 import sys
 import os
+import html.parser
 from urllib import request
 sys.path.append(os.getcwd())  # HACK, surly we don't want to write modules like this
 import json
 import logger
 import traceback
+import xml.etree.ElementTree
 
 
 def run(message):
@@ -78,8 +80,11 @@ def run(message):
                 return "Sorry, deleting jokes is only for admins"
         elif msg[1] == "baneks":
             logger.info("Baneks request...")
-            page = request.urlopen("http://baneks.ru/random").read().decode()
-
+            api = "https://api.vk.com/method/"
+            rqst = request.urlopen(api + "wall.get?domain=baneks&count=1").read().decode()
+            aneks_count = json.loads(rqst)["response"][0]
+            rqst = request.urlopen(api + "wall.get?domain=baneks&offset={}&count=1".format(random.randint(1, aneks_count))).read().decode()
+            return json.loads(rqst)["response"][1]["text"].replace("<br>", "\n")
         else:
             logger.info("Unknown subcommand, ignoring")
             return random.choice(data["jokes"])
