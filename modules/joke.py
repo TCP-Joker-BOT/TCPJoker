@@ -84,7 +84,7 @@ def run(message):
             rqst = request.urlopen(api + "wall.get?domain=baneks&count=1").read().decode()
             aneks_count = json.loads(rqst)["response"][0]
             rqst = request.urlopen(api + "wall.get?domain=baneks&offset={}&count=1".format(random.randint(1, aneks_count))).read().decode()
-            return json.loads(rqst)["response"][1]["text"].replace("<br>", "\n")
+            return str(json.loads(rqst)["response"][1]["text"].replace("<br>", "\n"))
         else:
             logger.info("Unknown subcommand, ignoring")
             return random.choice(data["jokes"])
