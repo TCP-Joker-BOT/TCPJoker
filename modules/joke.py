@@ -2,6 +2,7 @@
 import random
 import sys
 import os
+from urllib import request
 sys.path.append(os.getcwd())  # HACK, surly we don't want to write modules like this
 import json
 import logger
@@ -54,7 +55,7 @@ def run(message):
                     ctr += 1
                     answer = "{}{}: {}\n".format(answer, i, data["jokes"][i])
             logger.info("Found {} results, sending...".format(ctr))
-            return answer.rstrip("\n")
+            return answer.rstrip("\n") or "Sorry, I don't remember such a joke"
             # crazy pythonista way
             # return "\n".join([str(data["jokes"].index(s)) + ": " + s for s in data["jokes"] if " ".join(msg[2:]).lower() in s.lower()])
         elif msg[1] == "delete":
@@ -75,6 +76,9 @@ def run(message):
                 return "Joke \"{}\" removed!".format(joke)
             else:
                 return "Sorry, deleting jokes is only for admins"
+        elif msg[1] == "baneks":
+            logger.info("Baneks request...")
+            page = request.urlopen("http://baneks.ru/random").read().decode()
 
         else:
             logger.info("Unknown subcommand, ignoring")
