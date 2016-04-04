@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 import random
-import sys
-import os
 import html.parser
 from urllib import request
-sys.path.append(os.getcwd())  # HACK, surly we don't want to write modules like this
 import json
 import logger
 import traceback
