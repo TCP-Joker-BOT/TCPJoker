@@ -1,1 +1,8 @@
-You won't get help here, muahahahaha!!!111oneoneeleven
+/joke - send a joke
+/joke add <text> - add a joke
+/joke search <text> - search for jokes in database
+/joke delete <num> - delete joke number <num>
+/whattimeisit - display current time
+/ping - say "Pong!"
+/hm - say "Hm."
+/help - display this help
