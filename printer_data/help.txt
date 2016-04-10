@@ -5,4 +5,5 @@
 /whattimeisit - display current time
 /ping - say "Pong!"
 /hm - say "Hm."
+/gitversion - display last commit id
 /help - display this help
