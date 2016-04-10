@@ -2,6 +2,7 @@
 /joke add <text> - add a joke
 /joke search <text> - search for jokes in database
 /joke delete <num> - delete joke number <num>
+/joke hivemind {on|off|} - turn hivemind on or off; display current state
 /whattimeisit - display current time
 /ping - say "Pong!"
 /hm - say "Hm."

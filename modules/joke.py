@@ -90,12 +90,33 @@ def s_baneks(_, __, ___, recurse=1):
     return str(json.loads(rqst)["response"][1]["text"].replace("<br>", "\n")) or s_baneks(0, 0, 0, recurse=recurse + 1)
 
 
+def s_hivemind(data, __, message):
+    if message["from"]["id"] not in data["admins"]:
+        return "You haven't permission to do that"
+    if message["text"].split(" ")[-1] == "on":
+        data["hivemind"] = True
+        write_config(data)
+        return "Hivemind mode enabled"
+    elif message["text"].split(" ")[-1] == "off":
+        data["hivemind"] = False
+        write_config(data)
+        return "Hivemind mode disabled"
+    elif message["text"].split(" ")[-1] == "hivemind":
+        if data["hivemind"]:
+            return "Hivemind is enabled now"
+        else:
+            return "Hivemind is disabled now"
+    else:
+        return "Unknown hivemind state"
+
+
 def run(message):
     subcommands = {
         "add": s_add,
         "search": s_search,
         "delete": s_delete,
-        "baneks": s_baneks
+        "baneks": s_baneks,
+        "hivemind": s_hivemind
     }
     try:
         data = load_config()
