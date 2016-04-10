@@ -1,4 +1,5 @@
 /joke - send a joke
+/joke baneks - send joke from a 'B' category
 /joke add <text> - add a joke
 /joke search <text> - search for jokes in database
 /joke delete <num> - delete joke number <num>
