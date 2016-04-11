@@ -20,6 +20,8 @@ def lock_wait(lock):
         logger.log("\"Database\" is locked, waiting...")
         while os.path.exists(lock):
             time.sleep(1)
+    open(lock, 'w').close()
+    logger.log("Lock file created")
 
 
 def lock_delete(lock):
