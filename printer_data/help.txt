@@ -1,1 +1,11 @@
-You won't get help here, muahahahaha!!!111oneoneeleven
+/joke - send a joke
+/joke baneks - send joke from a 'B' category
+/joke add <text> - add a joke
+/joke search <text> - search for jokes in database
+/joke delete <num> - delete joke number <num>
+/joke hivemind {on|off|} - turn hivemind on or off; display current state
+/whattimeisit - display current time
+/ping - say "Pong!"
+/hm - say "Hm."
+/gitversion - display last commit id
+/help - display this help
