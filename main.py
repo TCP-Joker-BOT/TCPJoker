@@ -17,18 +17,18 @@ URL_BASE = 'https://api.telegram.org/bot'
 
 def lock_wait(lock):
     if os.path.exists(lock):
-        logger.log("\"Database\" is locked, waiting...")
+        logger.info("\"Database\" is locked, waiting...")
         while os.path.exists(lock):
             time.sleep(1)
     open(lock, 'w').close()
-    logger.log("Lock file created")
+    logger.info("Lock file created")
 
 
 def lock_delete(lock):
     if os.path.exists(lock):
         try:
             os.remove(lock)
-            logger.log("Finished, lock removed")
+            logger.info("Finished, lock removed")
         except FileNotFoundError:
             logger.warn("Lock file not found")
 
