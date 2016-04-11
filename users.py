@@ -62,7 +62,6 @@ def delete_user_from_group(username, group):
 
 
 try:
-    open('users.lock', 'w+').close()
     data = json.load(open('users.json', 'r'))
     if type(data) != dict:
         raise ValueError
