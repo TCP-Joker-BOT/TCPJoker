@@ -6,11 +6,26 @@ import re
 import urllib.request
 import logger
 import traceback
+import os
+import time
 from configparser import ConfigParser
 
 
 CONFIG_FILE_NAME = 'bot.cfg'
 URL_BASE = 'https://api.telegram.org/bot'
+
+
+def lock_wait(lock):
+    if os.path.exists(lock):
+        logger.log("\"Database\" is locked, waiting...")
+    while os.path.exists(lock):
+        time.sleep(1)
+
+
+def lock_delete(lock):
+    if os.path.exists(lock):
+        logger.log("Finished, removing lock...")
+        os.remove(lock)
 
 
 def do_telegram_request(method, **data):
@@ -32,7 +47,10 @@ def proceed_message(message_object):
     logger.info('Command found in config')
     module = getattr(__import__('modules.' + module_name), module_name)  # Black python magic
     logger.info('Module successfully imported')
-    return module.run(message_object)
+    lock_wait("users.lock")
+    result = module.run(message_object)
+    lock_delete("users.lock")
+    return result
 
 
 def send_answer(text, chat_id):

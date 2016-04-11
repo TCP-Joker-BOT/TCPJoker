@@ -10,6 +10,10 @@ def save_to_file(data):
     f.close()
 
 
+def is_user_registered(username):
+    return username in data
+
+
 def register_user(username):
     global data
     data[username] = {'admin': False, 'groups': []}
@@ -33,6 +37,14 @@ def is_user_in_group(username, group):
     return username in data and group in data[username]['groups']
 
 
+def list_groups(username):
+    global data
+    if username in data:
+        return data[username]['groups']
+    else:
+        return []
+
+
 def add_user_to_group(username, group):
     global data
     if is_user_in_group(username, group):
@@ -50,6 +62,7 @@ def delete_user_from_group(username, group):
 
 
 try:
+    open('users.lock', 'w+').close()
     data = json.load(open('users.json', 'r'))
     if type(data) != dict:
         raise ValueError

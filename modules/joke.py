@@ -3,6 +3,7 @@ import random
 from urllib import request
 import json
 import logger
+import users
 
 CFG_PATH = "modules/joke.json"
 
@@ -35,7 +36,7 @@ def write_config(data):
 
 def s_add(data, joke, message):
     logger.info("Add request...")
-    if (data["hivemind"] or message["from"]["id"] in data["admins"]):
+    if (data["hivemind"] or users.is_user_admin(message["from"]["id"])):
         data["jokes"].append(joke)
         write_config(data)
         logger.info("Add request granted")
@@ -62,7 +63,7 @@ def s_search(data, query, _):
 
 def s_delete(data, index, message):
     logger.info("Deletion request...")
-    if message["from"]["id"] in data["admins"]:
+    if users.is_user_admin(message["from"]["id"]):
         try:
             index = int(index)
             joke = data["jokes"].pop(index)
