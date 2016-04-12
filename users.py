@@ -66,15 +66,15 @@ try:
     if type(data) != dict:
         raise ValueError
     else:
-        for u in data['users'].values():
+        for u in data.values():
             if 'admin' not in u or type(u['admin']) != bool or 'groups' not in u or type(u['groups']) != list:
                 raise ValueError
 except FileNotFoundError:
     logger.info('File with users not found and will be created')
-    data = {'users': {}}
+    data = {}
 except ValueError:
     logger.warning('Invalid users file, creating new')
-    data = {'users': {}}
+    data = {}
 except:
     logger.warning('Some error occured with users file, creating new')
-    data = {'users': {}}
+    data = {}

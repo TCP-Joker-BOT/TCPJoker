@@ -5,40 +5,73 @@ import json
 import logger
 import users
 
+#: Path to configuration file
 CFG_PATH = "modules/joke.json"
+#: Global variable to store module configuration
+CONFIG = None
+#: Default module configuration
+DEFAULT_CONFIG = {
+    "hivemind": False,
+    "admins": [
+        74741895,
+        187843269
+    ],
+    "jokes": [
+        "What's the best thing about having sex with twenty seven year olds?\n"
+        "There are twenty of them!"
+    ],
+}
 
 
-def load_config():
+def load_config(path=None):
+    """
+    Loads config to :py:const:`CONFIG` from `CFG_PATH` or `path` if provided
+
+    :param path: path to config
+    :type path: string or None
+    :rtype: any
+    """
+
+    global CONFIG
+
+    path = path or CFG_PATH
     try:
-        data = json.load(open(CFG_PATH, "r", encoding="utf-8"))
+        CONFIG = json.load(open(path, "r", encoding="utf-8"))
         logger.info("Loaded config")
     except FileNotFoundError:
-        write_config(
-            {
-                "hivemind": False,
-                "admins": [
-                    74741895,
-                    187843269
-                ],
-                "jokes": [
-                    "What's the best thing about having sex with twenty seven year olds?\n"
-                    "There are twenty of them!"
-                ],
-            })
+        CONFIG = DEFAULT_CONFIG
+        write_config(path=path)
         logger.info("Config not found, created default")
-    return data
 
 
-def write_config(data):
-    with open(CFG_PATH, "w", encoding="utf-8") as config:
-        config.write(json.dumps(data))
+def write_config(data=None, path=None):
+    """
+    Writes :py:const:`CONFIG` or `CONFIG` (if provided) to `CFG_PATH` or `path` (if provided)
+
+    :param data: configuration data to serialize
+    :param path: path to config
+    :type path: string or None
+    """
+    global CONFIG
+
+    CONFIG = CONFIG or CONFIG
+    path = path or CFG_PATH
+    with open(path, "w", encoding="utf-8") as config:
+        config.write(json.dumps(CONFIG))
 
 
-def s_add(data, joke, message):
+def s_add(message):
+    """
+    Adds joke to joke pool if hivemind mode is on or joke sender is admin
+
+    :param message: Telegram message object
+    :rtype: str
+    """
     logger.info("Add request...")
-    if (data["hivemind"] or users.is_user_admin(message["from"]["id"])):
-        data["jokes"].append(joke)
-        write_config(data)
+    joke = message['text'].split(' ', 2)[2]
+    if (CONFIG["hivemind"] or users.is_user_admin(message["from"]["id"])):
+        CONFIG["jokes"].append(joke)
+        write_config(CONFIG)
         logger.info("Add request granted")
         return "Thx for your great joke!"
     else:
@@ -46,41 +79,57 @@ def s_add(data, joke, message):
         return "Sorry, adding jokes is enabled only for admins"
 
 
-def s_search(data, query, _):
+def s_search(message):
+    """
+    Searches joke pool case-insensitively.
+
+    :param message: Telegram message object
+    :rtype: str
+    """
     logger.info("Search request...")
-    query = query.lower()
+    try:
+        query = message['text'].split(' ', 2)[2].lower()
+    except IndexError:
+        query = ""
     answer = ""
     ctr = 0
-    for i in range(len(data["jokes"])):
-        if query in data["jokes"][i].lower():
+    for i in range(len(CONFIG["jokes"])):
+        if query in CONFIG["jokes"][i].lower():
             ctr += 1
-            answer = "{}{}: {}\n".format(answer, i, data["jokes"][i])
+            answer = "{}{}: {}\n".format(answer, i, CONFIG["jokes"][i])
     logger.info("Found {} results, sending...".format(ctr))
     return answer.rstrip("\n") or "Sorry, I don't remember such a joke"
-    # crazy pythonista way
-    # return "\n".join([str(data["jokes"].index(s)) + ": " + s for s in data["jokes"] if " ".join(msg[2:]).lower() in s.lower()])
 
 
-def s_delete(data, index, message):
+def s_delete(message):
+    """
+    Deletes joke from pool by number if sender is admin
+
+    :param message: Telegram message object
+    :rtype: str
+    """
     logger.info("Deletion request...")
     if users.is_user_admin(message["from"]["id"]):
         try:
-            index = int(index)
-            joke = data["jokes"].pop(index)
+            index = int(message['text'].split(' ', 2)[2])
+            joke = CONFIG["jokes"].pop(index)
         except ValueError:
             logger.info("Invalid number")
             return "Hey, looks like NaN!"
         except IndexError:
             logger.info("Invalid number")
             return "I do not have SO many jokes yet"
-        write_config(data)
+        write_config(CONFIG)
         logger.info("Deletion request granted")
         return "Joke \"{}\" removed!".format(joke)
     else:
         return "Sorry, deleting jokes is only for admins"
 
 
-def s_baneks(_, __, ___, recurse=1):
+def s_baneks(*_, recurse=1):
+    """
+    Returns random joke from `'B' category <https://vk.com/baneks>`_
+    """
     if recurse > 5:
         return "Sorry, an error occured"
     logger.info("Baneks request...")
@@ -91,19 +140,22 @@ def s_baneks(_, __, ___, recurse=1):
     return str(json.loads(rqst)["response"][1]["text"].replace("<br>", "\n")) or s_baneks(0, 0, 0, recurse=recurse + 1)
 
 
-def s_hivemind(data, __, message):
-    if message["from"]["id"] not in data["admins"]:
+def s_hivemind(message):
+    """
+    Controls `hivemind` option state
+    """
+    if message["from"]["id"] not in CONFIG["admins"]:
         return "You haven't permission to do that"
     if message["text"].split(" ")[-1] == "on":
-        data["hivemind"] = True
-        write_config(data)
+        CONFIG["hivemind"] = True
+        write_config(CONFIG)
         return "Hivemind mode enabled"
     elif message["text"].split(" ")[-1] == "off":
-        data["hivemind"] = False
-        write_config(data)
+        CONFIG["hivemind"] = False
+        write_config(CONFIG)
         return "Hivemind mode disabled"
     elif message["text"].split(" ")[-1] == "hivemind":
-        if data["hivemind"]:
+        if CONFIG["hivemind"]:
             return "Hivemind is enabled now"
         else:
             return "Hivemind is disabled now"
@@ -120,13 +172,16 @@ def run(message):
         "hivemind": s_hivemind
     }
     try:
-        data = load_config()
+        load_config()
     except:
         return "Sorry, an error occured"
 
     msg = message["text"].split(" ")
     if len(msg) > 1 and msg[1] in subcommands:
-        return subcommands[msg[1]](data, " ".join(msg[2:]), message)
+        return subcommands[msg[1]](message)
     else:
         logger.info("Joke request, replying")
-        return random.choice(data["jokes"])
+        try:
+            return random.choice(CONFIG["jokes"])
+        except IndexError:
+            return "Sorry, I don't have any jokes"
