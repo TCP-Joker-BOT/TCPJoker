@@ -1,0 +1,9 @@
+[main]
+token: YOUR_TOKEN
+[commands]
+joke: joke
+whattimeisit: time
+help: printer
+ping: printer
+hm: printer
+gitversion: gitversion
