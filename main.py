@@ -8,7 +8,7 @@ import logger
 import traceback
 import os
 import time
-from configparser import ConfigParser
+from configreader import ConfigReader
 
 
 CONFIG_FILE_NAME = 'bot.cfg'
@@ -34,7 +34,7 @@ def lock_delete(lock):
 
 
 def do_telegram_request(method, **data):
-    config = ConfigParser(CONFIG_FILE_NAME)
+    config = ConfigReader(CONFIG_FILE_NAME)
     req = urllib.request.Request(URL_BASE + config.get_token() + '/' + method, headers={'Content-Type': 'application/json'})
     json_data = json.dumps(data)
     urllib.request.urlopen(req, json_data.encode('utf-8'))
@@ -47,7 +47,7 @@ def proceed_message(message_object):
         raise ValueError
     message_command = message_command[1:]
     logger.info('Command: ' + message_command)
-    config = ConfigParser(CONFIG_FILE_NAME)
+    config = ConfigReader(CONFIG_FILE_NAME)
     module_name = config.get_command_dict()[message_command]
     logger.info('Command found in config')
     module = getattr(__import__('modules.' + module_name), module_name)  # Black python magic
