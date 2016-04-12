@@ -37,7 +37,7 @@ class ConfigReader:
         """Get the dict, which associates commands with modules.
 
         Returns:
-            dict: command -> module associations. 
+            dict: command -> module associations.
 
             E.g. `{'whattimeisit': 'time'}` means command `/whattimeisit` will call the module `time`.
         """
@@ -45,3 +45,25 @@ class ConfigReader:
             return {}
         else:
             return dict(self.config['commands'])
+
+    def set_command(self, command, module):
+        """Set command -> module association
+
+        Args:
+            command (str): command without `/`
+            module (str): the module to be associated with `command`
+        """
+        self.config.set('commands', command, value=module)
+
+    def unset_command(self, command):
+        """Remove command -> module association
+
+        Args:
+            command (str): command to be removed
+        Raises:
+            IndexError: if `command` is not present in config
+        """
+        if self.config.has_option('commands', command):
+            self.config.remove_option('commands', command)
+        else:
+            raise IndexError
