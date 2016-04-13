@@ -24,12 +24,10 @@ DEFAULT_CONFIG = {
 
 
 def load_config(path=None):
-    """
-    Loads config to :py:const:`CONFIG` from `CFG_PATH` or `path` if provided
+    """Loads config to :py:const:`CONFIG` from `CFG_PATH` or `path` if provided
 
-    :param path: path to config
-    :type path: string or None
-    :rtype: any
+    Args:
+        path (string): path to the configuration file
     """
 
     global CONFIG
@@ -45,12 +43,11 @@ def load_config(path=None):
 
 
 def write_config(data=None, path=None):
-    """
-    Writes :py:const:`CONFIG` or `CONFIG` (if provided) to `CFG_PATH` or `path` (if provided)
+    """Writes :py:const:`CONFIG` or `CONFIG` (if provided) to `CFG_PATH` or `path` (if provided)
 
-    :param data: configuration data to serialize
-    :param path: path to config
-    :type path: string or None
+    Args:
+        data: configuration data to serialize
+        path (string): path to the configuration file
     """
     global CONFIG
 
@@ -61,11 +58,12 @@ def write_config(data=None, path=None):
 
 
 def s_add(message):
-    """
-    Adds joke to joke pool if hivemind mode is on or joke sender is admin
+    """Adds joke to joke pool if hivemind mode is on or joke sender is admin
 
-    :param message: Telegram message object
-    :rtype: str
+    Args:
+        message: Telegram message object
+    Returns:
+        str: result in human-readable format
     """
     logger.info("Add request...")
     joke = message['text'].split(' ', 2)[2]
@@ -80,11 +78,12 @@ def s_add(message):
 
 
 def s_search(message):
-    """
-    Searches joke pool case-insensitively.
+    """Searches joke pool case-insensitively.
 
-    :param message: Telegram message object
-    :rtype: str
+    Args:
+        message: Telegram message object
+    Returns:
+        str: seqrch results in human-readable format
     """
     logger.info("Search request...")
     try:
@@ -102,11 +101,12 @@ def s_search(message):
 
 
 def s_delete(message):
-    """
-    Deletes joke from pool by number if sender is admin
+    """Deletes joke from pool by number if sender is admin
 
-    :param message: Telegram message object
-    :rtype: str
+    Args:
+        message: Telegram message object
+    Returns:
+        str: result in human-readable format
     """
     logger.info("Deletion request...")
     if users.is_user_admin(message["from"]["id"]):
@@ -128,7 +128,12 @@ def s_delete(message):
 
 def s_baneks(*_, recurse=1):
     """
-    Returns random joke from `'B' category <https://vk.com/baneks>`_
+    Returns random joke from `'B' category <https://vk.com/baneks>`_. Runs recursively until a joke with non-empty text is found.
+
+    Args:
+        recurse (Optional[int]): Depth of recursion. Defaults to 1.
+    Returns:
+        str: random joke from `'B' category <https://vk.com/baneks>`_
     """
     if recurse > 5:
         return "Sorry, an error occured"
@@ -141,8 +146,12 @@ def s_baneks(*_, recurse=1):
 
 
 def s_hivemind(message):
-    """
-    Controls `hivemind` option state
+    """Controls `hivemind` option state
+
+    Args:
+        message: Telegram message object
+    Returns:
+        str: result in human-readable format
     """
     if message["from"]["id"] not in CONFIG["admins"]:
         return "You haven't permission to do that"
