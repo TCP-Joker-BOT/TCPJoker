@@ -18,6 +18,7 @@ class ConfigReader:
         Args:
             filename (str): the name of file with config
         """
+        self.filename = filename
         self.config = configparser.ConfigParser()
         self.config.read(filename)
 
@@ -53,7 +54,10 @@ class ConfigReader:
             command (str): command without `/`
             module (str): the module to be associated with `command`
         """
+        if not self.config.has_section('commands'):
+            self.config.add_section('commands')
         self.config.set('commands', command, value=module)
+        self.config.write(open(self.filename, 'w'))
 
     def unset_command(self, command):
         """Remove command -> module association
@@ -67,3 +71,4 @@ class ConfigReader:
             self.config.remove_option('commands', command)
         else:
             raise IndexError
+        self.config.write(open(self.filename, 'w'))
