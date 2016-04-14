@@ -11,11 +11,14 @@ def curr_time():
 
 def info(message):
     print(curr_time() + ' [INFO] ' + message, file=LOG_FILE)
+    LOG_FILE.flush()
 
 
 def warning(message):
     print(curr_time() + ' [WARN] ' + message, file=LOG_FILE)
+    LOG_FILE.flush()
 
 
 def error(message):
     print(curr_time() + ' [ERR!] ' + message, file=LOG_FILE)
+    LOG_FILE.flush()

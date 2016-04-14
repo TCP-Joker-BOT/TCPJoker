@@ -42,7 +42,7 @@ def do_telegram_request(method, **data):
 
 def proceed_message(message_object):
     message_text = message_object['text']
-    message_command = re.sub('^(.*?)[\\s@].*', '\\1', message_text)
+    message_command = re.sub('^(.*?)[\\s@].*', '\\1', message_text, flags=re.S)
     if message_command[0] != '/' or message_command == '':
         raise ValueError
     message_command = message_command[1:]
