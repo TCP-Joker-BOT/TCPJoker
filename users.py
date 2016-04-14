@@ -10,54 +10,54 @@ def save_to_file(data):
     f.close()
 
 
-def is_user_registered(username):
-    return username in data
+def is_user_registered(user_id):
+    return user_id in data
 
 
-def register_user(username):
+def register_user(user_id):
     global data
-    data[username] = {'admin': False, 'groups': []}
+    data[user_id] = {'admin': False, 'groups': []}
 
 
-def is_user_admin(username):
+def is_user_admin(user_id):
     global data
-    return username in data and data[username]['admin']
+    return user_id in data and data[user_id]['admin']
 
 
-def set_user_admin(username, admin_flag):
+def set_user_admin(user_id, admin_flag):
     global data
-    if username not in data:
-        register_user(username)
-    data[username]['admin'] = admin_flag
+    if user_id not in data:
+        register_user(user_id)
+    data[user_id]['admin'] = admin_flag
     save_to_file(data)
 
 
-def is_user_in_group(username, group):
+def is_user_in_group(user_id, group):
     global data
-    return username in data and group in data[username]['groups']
+    return user_id in data and group in data[user_id]['groups']
 
 
-def list_groups(username):
+def list_groups(user_id):
     global data
-    if username in data:
-        return data[username]['groups']
+    if user_id in data:
+        return data[user_id]['groups']
     else:
         return []
 
 
-def add_user_to_group(username, group):
+def add_user_to_group(user_id, group):
     global data
-    if is_user_in_group(username, group):
+    if is_user_in_group(user_id, group):
         return
-    data[username]['groups'].append(group)
+    data[user_id]['groups'].append(group)
     save_to_file(data)
 
 
-def delete_user_from_group(username, group):
+def delete_user_from_group(user_id, group):
     global data
-    if not is_user_in_group(username, group):
+    if not is_user_in_group(user_id, group):
         return
-    data[username]['groups'].remove(group)
+    data[user_id]['groups'].remove(group)
     save_to_file(data)
 
 
