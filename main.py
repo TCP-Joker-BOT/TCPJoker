@@ -11,6 +11,7 @@ import time
 from configreader import ConfigReader
 
 
+LOCK_FILE_NAME = "users.lock"
 CONFIG_FILE_NAME = 'bot.cfg'
 URL_BASE = 'https://api.telegram.org/bot'
 
@@ -33,6 +34,7 @@ def lock_delete(lock):
             logger.warn("Lock file not found")
 
 
+
 def do_telegram_request(method, **data):
     config = ConfigReader(CONFIG_FILE_NAME)
     req = urllib.request.Request(URL_BASE + config.get_token() + '/' + method, headers={'Content-Type': 'application/json'})
@@ -52,9 +54,8 @@ def proceed_message(message_object):
     logger.info('Command found in config')
     module = getattr(__import__('modules.' + module_name), module_name)  # Black python magic
     logger.info('Module successfully imported')
-    lock_wait("users.lock")
     result = module.run(message_object)
-    lock_delete("users.lock")
+
     return result
 
 
@@ -75,8 +76,11 @@ def main():
 
 
 if __name__ == '__main__':
+    lock_wait(LOCK_FILE_NAME)
     try:
         main()
     except Exception:
         logger.error(traceback.format_exc())
         logger.error('Incorrect exit')
+    finally:
+        lock_delete(LOCK_FILE_NAME)
