@@ -7,5 +7,11 @@
 /whattimeisit - display current time
 /ping - say "Pong!"
 /hm - say "Hm."
+/id - show your id (or id of user you replying are)
+/user <id> show admin - check if user is admin
+/user <id> set admin {true|false} - set user admin status
+/user <id> add group <group> - add user to group
+/user <id> delete group <group> - delete user from group
+/user <id> show groups - show user groups
 /gitversion - display last commit id
 /help - display this help
