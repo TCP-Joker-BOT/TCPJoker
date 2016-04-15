@@ -149,7 +149,7 @@ def s_hivemind(message):
     Returns:
         str: result in human-readable format
     """
-    if users.is_user_in_group(message["from"]["id"], 'joke') or users.is_user_admin(message["from"]["id"]):
+    if not users.is_user_admin(message["from"]["id"]):
         return "You haven't permission to do that"
     if message["text"].split(" ")[-1] == "on":
         CONFIG["hivemind"] = True
