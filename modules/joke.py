@@ -12,10 +12,6 @@ CONFIG = None
 #: Default module configuration
 DEFAULT_CONFIG = {
     "hivemind": False,
-    "admins": [
-        74741895,
-        187843269
-    ],
     "jokes": [
         "What's the best thing about having sex with twenty seven year olds?\n"
         "There are twenty of them!"
@@ -67,7 +63,7 @@ def s_add(message):
     """
     logger.info("Add request...")
     joke = message['text'].split(' ', 2)[2]
-    if (CONFIG["hivemind"] or users.is_user_admin(message["from"]["id"])):
+    if CONFIG["hivemind"] or users.is_user_in_group(message["from"]["id"], 'joke'):
         CONFIG["jokes"].append(joke)
         write_config(CONFIG)
         logger.info("Add request granted")
@@ -109,7 +105,7 @@ def s_delete(message):
         str: result in human-readable format
     """
     logger.info("Deletion request...")
-    if users.is_user_admin(message["from"]["id"]):
+    if users.is_user_in_group(message["from"]["id"], 'joke'):
         try:
             index = int(message['text'].split(' ', 2)[2])
             joke = CONFIG["jokes"].pop(index)
@@ -153,7 +149,7 @@ def s_hivemind(message):
     Returns:
         str: result in human-readable format
     """
-    if message["from"]["id"] not in CONFIG["admins"]:
+    if users.is_user_in_group(message["from"]["id"], 'joke'):
         return "You haven't permission to do that"
     if message["text"].split(" ")[-1] == "on":
         CONFIG["hivemind"] = True
