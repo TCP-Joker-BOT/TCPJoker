@@ -63,7 +63,7 @@ def s_add(message):
     """
     logger.info("Add request...")
     joke = message['text'].split(' ', 2)[2]
-    if CONFIG["hivemind"] or users.is_user_in_group(message["from"]["id"], 'joke'):
+    if CONFIG["hivemind"] or users.is_user_in_group(message["from"]["id"], 'joke') or users.is_user_admin(message["from"]["id"]):
         CONFIG["jokes"].append(joke)
         write_config(CONFIG)
         logger.info("Add request granted")
@@ -105,7 +105,7 @@ def s_delete(message):
         str: result in human-readable format
     """
     logger.info("Deletion request...")
-    if users.is_user_in_group(message["from"]["id"], 'joke'):
+    if users.is_user_in_group(message["from"]["id"], 'joke') or users.is_user_admin(message["from"]["id"]):
         try:
             index = int(message['text'].split(' ', 2)[2])
             joke = CONFIG["jokes"].pop(index)
@@ -149,7 +149,7 @@ def s_hivemind(message):
     Returns:
         str: result in human-readable format
     """
-    if users.is_user_in_group(message["from"]["id"], 'joke'):
+    if users.is_user_in_group(message["from"]["id"], 'joke') or users.is_user_admin(message["from"]["id"]):
         return "You haven't permission to do that"
     if message["text"].split(" ")[-1] == "on":
         CONFIG["hivemind"] = True
