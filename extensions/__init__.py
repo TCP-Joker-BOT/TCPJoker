@@ -12,6 +12,6 @@ for name in f:
         __doc__ = """{doc}
 {module}
 {underscores}
-    .. automodule:: modules.{module}
+    .. automodule:: extensions.{module}
         :members:
 """.format(doc=__doc__, module=name[:-3], underscores="=" * (len(name) - 3))

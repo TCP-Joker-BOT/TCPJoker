@@ -1,38 +1,38 @@
 #!/usr/bin/python3
-import users
+import extensions.users
 import logger
 
 
 def s_show_user_admin(user_id, _):
-    if users.is_user_admin(user_id):
+    if extensions.users.is_user_admin(user_id):
         return 'User {} is admin'.format(user_id)
     else:
         return 'User {} isn\'t admin'.format(user_id)
 
 
 def s_set_user_admin(user_id, admin_flag):
-    users.set_user_admin(user_id, admin_flag == 'true')
+    extensions.users.set_user_admin(user_id, admin_flag == 'true')
     return 'User {} admin status is now {}'.format(user_id, admin_flag)
 
 
 def s_add_user_group(user_id, group_name):
-    users.add_user_to_group(user_id, group_name)
+    extensions.users.add_user_to_group(user_id, group_name)
     return 'User {} added to group {}'.format(user_id, group_name)
 
 
 def s_delete_user_group(user_id, group_name):
-    users.delete_user_from_group(user_id, group_name)
+    extensions.users.delete_user_from_group(user_id, group_name)
     return 'User {} deleted from group {}'.format(user_id, group_name)
 
 
 def s_show_user_groups(user_id, _):
-    user_groups = users.list_groups(user_id)
+    user_groups = extensions.users.list_groups(user_id)
     return 'User {} is in following groups: {}'.format(user_id, ', '.join(user_groups))
 
 
 def run(message):
     logger.info('Starting user control')
-    if not users.is_user_admin(message['from']['id']):
+    if not extensions.users.is_user_admin(message['from']['id']):
         return 'Sorry, this option avaible only for admins'
     subcommands = {
         ('set', 'admin'): s_set_user_admin,
