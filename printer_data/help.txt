@@ -2,6 +2,7 @@
 /joke baneks - send joke from a 'B' category
 /joke add <text> - add a joke
 /joke search <text> - search for jokes in database
+/joke i <num> - send joke number <num>
 /joke delete <num> - delete joke number <num>
 /joke hivemind {on|off|} - turn hivemind on or off; display current state
 /whattimeisit - display current time

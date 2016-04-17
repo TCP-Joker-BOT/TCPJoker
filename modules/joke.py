@@ -122,6 +122,28 @@ def s_delete(message):
         return "Sorry, deleting jokes is only for admins"
 
 
+def s_index(message):
+    """Returns joke from pool by number
+
+    Args:
+        message: Telegram message object
+    Returns:
+        str: result in human-readable format
+    """
+    logger.info("Joke by-index request uest")
+    try:
+        index = int(message['text'].split(' ', 2)[2])
+        joke = CONFIG["jokes"][index]
+    except ValueError:
+        logger.info("Invalid number")
+        return "Hey, looks like NaN!"
+    except IndexError:
+        logger.info("Invalid number")
+        return "I do not have SO many jokes yet"
+    logger.info("Joke {} sent".format(index))
+    return joke
+
+
 def s_baneks(*_, recurse=1):
     """
     Returns random joke from `'B' category <https://vk.com/baneks>`_. Runs recursively until a joke with non-empty text is found.
@@ -174,7 +196,8 @@ def run(message):
         "search": s_search,
         "delete": s_delete,
         "baneks": s_baneks,
-        "hivemind": s_hivemind
+        "hivemind": s_hivemind,
+        "i": s_index
     }
     try:
         load_config()
