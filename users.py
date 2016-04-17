@@ -4,8 +4,11 @@ import logger
 import os.path
 
 
+DATA_FILE_NAME = 'users.json'
+
+
 def save_to_file(data):
-    f = open('users.json', 'w')
+    f = open(DATA_FILE_NAME, 'w')
     json.dump(data, f)
     f.close()
 
@@ -64,7 +67,7 @@ def delete_user_from_group(user_id, group):
 
 
 try:
-    data = json.load(open('users.json', 'r'))
+    data = json.load(open(DATA_FILE_NAME, 'r'))
     if type(data) != dict:
         raise ValueError
     else:
