@@ -9,7 +9,7 @@ DATA_FILE_NAME = 'users.json'
 
 def save_to_file(data):
     """Saves python data to JSON file named :py:const:`DATA_FILE_NAME`.
-    
+
     Args:
         data (dict): Python dict to save
     """
