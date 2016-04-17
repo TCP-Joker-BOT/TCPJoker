@@ -8,6 +8,8 @@
 /whattimeisit - display current time
 /ping - say "Pong!"
 /hm - say "Hm."
+/roll - display random number from 1 to 6
+/roll <n> - display random number from 1 to n
 /id - show your id (or id of user you replying are)
 /user <id> show admin - check if user is admin
 /user <id> set admin {true|false} - set user admin status
