@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import users
+import extensions.users
 import logger
 
 

@@ -3,7 +3,7 @@ import random
 from urllib import request
 import json
 import logger
-import users
+import extensions.users
 
 #: Path to configuration file
 CFG_PATH = "modules/joke.json"
