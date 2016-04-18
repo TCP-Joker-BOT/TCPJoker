@@ -1,5 +1,11 @@
 #!/usr/bin/python3
+"""
+Summary:
+~~~~~~~~
+Hard choice? Roll a dice!
+"""
 import random
+
 
 def run(message):
     args = message['text'].split()[1:]

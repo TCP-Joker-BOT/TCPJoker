@@ -1,9 +1,41 @@
 #!/usr/bin/env python3
+"""
+Summary:
+~~~~~~~~
+Provides user-editable pool of jokes as well as random jokes from `B category <https://vk.com/baneks>`_.
+Jokes pool is by default editable by members of `joke` group and bot admins.
+Alternatively, there's `hivemind mode`, which allows any user to add jokes to pool.
+To remove jokes from pool, user still needs to be module or bot admin.
+
+Sub-commands:
+~~~~~~~~~~~~~
+    * search [query]
+    Search for query in jokes pool. When called without arguments, returns the whole joke pool.
+
+    * i <num>
+    Return joke number <num>.
+
+    * add <joke>
+    Add <joke> to pool if sender is admin or hivemind mode is enabled.
+
+    * delete <num>
+    Delete joke number <num> from pool if sender is admin.
+
+    * baneks
+    Return random joke from `B category <https://vk.com/baneks>`_
+
+    * hivemind {on|off}
+    Toggle hivemind mode.
+
+    * When called without arguments, return random joke from pool.
+"""
+
 import random
 from urllib import request
 import json
 import logger
 import extensions.users
+
 
 #: Path to configuration file
 CFG_PATH = "modules/joke.json"
