@@ -1,4 +1,9 @@
 import re
+"""
+Summary:
+~~~~~~~~
+Module for static commands. Place file `commandname.txt` in `printer_data/` directory and map corresponding command to `printer`.
+"""
 
 
 def run(message):

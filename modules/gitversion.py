@@ -1,4 +1,10 @@
 import subprocess
+"""
+Summary:
+~~~~~~~~
+
+Display last commit id.
+"""
 
 
 def run(_):

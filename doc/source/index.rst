@@ -53,16 +53,17 @@ Here Emmanuel will someday answer, why MIT
 
 Here Emmanuel will someday answer, why webhooks
 
+Extensions documentation
+========================
+
+.. automodule:: extensions
+
 Modules documentation
 =====================
 
 .. automodule:: modules
 
 
-Extensions documentation
-========================
-
-.. automodule:: extensions
 
 Indices and tables
 ==================

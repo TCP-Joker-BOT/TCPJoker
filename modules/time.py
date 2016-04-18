@@ -1,3 +1,8 @@
+"""
+Summary:
+~~~~~~~~
+Returns current time.
+"""
 from datetime import datetime as dt
 
 
