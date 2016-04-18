@@ -2,6 +2,7 @@
 """
 Summary:
 ~~~~~~~~
+
 Provides user-editable pool of jokes as well as random jokes from `B category <https://vk.com/baneks>`_.
 Jokes pool is by default editable by members of `joke` group and bot admins.
 Alternatively, there's `hivemind mode`, which allows any user to add jokes to pool.
@@ -9,6 +10,7 @@ To remove jokes from pool, user still needs to be module or bot admin.
 
 Sub-commands:
 ~~~~~~~~~~~~~
+
     * search [query]
     Search for query in jokes pool. When called without arguments, returns the whole joke pool.
 
@@ -28,6 +30,7 @@ Sub-commands:
     Toggle hivemind mode.
 
     * When called without arguments, return random joke from pool.
+
 """
 
 import random

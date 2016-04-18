@@ -7,7 +7,6 @@ A module based Telegram Bot using webhooks.
   :hidden:
   :maxdepth: 2
 
-  modules
 
 --------
 Features
