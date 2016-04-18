@@ -18,3 +18,6 @@
 /user <id> show groups - show user groups
 /gitversion - display last commit id
 /help - display this help
+Bot is running on TCP Joker engine.
+GitHub: https://github.com/TCP-Joker-BOT/TCPJoker
+Docs: http://tcp-joker-bot.github.io/TCPJoker-Docs/index.html
