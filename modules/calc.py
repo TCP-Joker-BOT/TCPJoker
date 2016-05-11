@@ -8,6 +8,7 @@ Evaluate mathematical expressions.
 
 import ast
 import math
+import fractions
 import operator
 import multiprocessing
 
@@ -43,7 +44,7 @@ class Calc(ast.NodeVisitor):
         "exp": math.exp,
         "fac": math.factorial,
         "floor": math.ceil,
-        "gcd": math.gcd,
+        "gcd": fractions.gcd,
         "hypot": math.hypot,
         "log": math.log,
         "sin": math.sin,
