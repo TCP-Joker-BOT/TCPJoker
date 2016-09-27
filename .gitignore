@@ -3,3 +3,4 @@
 bot.log
 bot.cfg
 ghpages
+__pycache__
