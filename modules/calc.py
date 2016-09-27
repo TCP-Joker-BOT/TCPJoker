@@ -38,6 +38,7 @@ class Calc(ast.NodeVisitor):
         ast.GtE: operator.ge,
         ast.Is: operator.is_,
         ast.IsNot: operator.is_not,
+        ast.Not: operator.not_
     }
 
     func_map = {
