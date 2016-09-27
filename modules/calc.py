@@ -30,6 +30,14 @@ class Calc(ast.NodeVisitor):
         ast.Sub: operator.sub,
         ast.USub: operator.neg,
         ast.UAdd: operator.pos,
+        ast.Eq: operator.eq,
+        ast.NotEq: operator.ne,
+        ast.Lt: operator.lt,
+        ast.LtE: operator.le,
+        ast.Gt: operator.gt,
+        ast.GtE: operator.ge,
+        ast.Is: operator.is_,
+        ast.IsNot: operator.is_not,
     }
 
     func_map = {
@@ -92,6 +100,17 @@ class Calc(ast.NodeVisitor):
             return self.func_map[node.func.id](*args)
         except KeyError:
             raise ValueError("function {} not supported" .format(node.func.id))
+
+    def visit_Compare(self, node):
+        left = self.visit(node.left)
+        out = True
+        for op, rnode in zip(node.ops, node.comparators):
+            right = self.visit(rnode)
+            out = self.op_map[type(op)](left, right)
+            left = right
+            if not out:
+                break
+        return out
 
     @classmethod
     def evaluate(cls, expression):
