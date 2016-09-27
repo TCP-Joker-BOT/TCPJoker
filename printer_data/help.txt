@@ -1,23 +1,24 @@
+/calc - simple calculator
+/gitversion - display last commit id
+/help - display this help
+/id - show your id (or id of user you are replying to)
 /joke - send a joke
-/joke baneks - send joke from a 'B' category
+/joke baneks - send a joke from a 'B' category
 /joke add <text> - add a joke
 /joke search <text> - search for jokes in database
 /joke i <num> - send joke number <num>
 /joke delete <num> - delete joke number <num>
 /joke hivemind {on|off|} - turn hivemind on or off; display current state
-/whattimeisit - display current time
-/ping - say "Pong!"
 /hm - say "Hm."
+/ping - say "Pong!"
 /roll - display random number from 1 to 6
 /roll <n> - display random number from 1 to n
-/id - show your id (or id of user you replying are)
 /user <id> show admin - check if user is admin
 /user <id> set admin {true|false} - set user admin status
 /user <id> add group <group> - add user to group
 /user <id> delete group <group> - delete user from group
 /user <id> show groups - show user groups
-/gitversion - display last commit id
-/help - display this help
+/whattimeisit - display current time
 Bot is running on TCP Joker engine.
 GitHub: https://github.com/TCP-Joker-BOT/TCPJoker
 Docs: http://tcp-joker-bot.github.io/TCPJoker-Docs/index.html

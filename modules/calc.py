@@ -64,6 +64,8 @@ class Calc(ast.NodeVisitor):
             return self.op_map[type(node.op)](left, right)
         except KeyError:
             raise ValueError("operator {} not supported".format(node.op.__class__.__name__))
+        except ZeroDivisionError:
+            raise ValueError("Division by zero")
 
     def visit_Name(self, node):
         try:
