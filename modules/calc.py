@@ -38,7 +38,11 @@ class Calc(ast.NodeVisitor):
         ast.GtE: operator.ge,
         ast.Is: operator.is_,
         ast.IsNot: operator.is_not,
-        ast.Not: operator.not_
+        ast.Not: operator.not_,
+        ast.In: lambda a, b: a in b,
+        ast.NotIn: lambda a, b: a not in b,
+        ast.And: operator.and_,
+        ast.Or: operator.or_
     }
 
     func_map = {
@@ -85,6 +89,26 @@ class Calc(ast.NodeVisitor):
     def visit_Num(self, node):
         return node.n
 
+    def visit_Str(self, node):
+        return node.s
+
+    def visit_NameConstant(self, node):
+        return node.value
+
+    def visit_Dict(self, node):
+        return dict([(self.visit(k), self.visit(v)) for k, v in zip(node.keys, node.values)])
+
+    def visit_BoolOp(self, node):
+        value = self.visit(node.values[0])
+        on_and = type(node.op) is ast.And
+        if (on_and and value) or (not on_and and not value):
+            for v in node.values[1:]:
+                value = self.op_map[type(node.op)](value, self.visit(v))
+                if (on_and and value) or (not on_and and not value):
+                    break
+
+        return value
+
     def visit_Expr(self, node):
         return self.visit(node.value)
 
@@ -113,6 +137,12 @@ class Calc(ast.NodeVisitor):
                 break
         return out
 
+    def visit_List(self, node):
+        return [self.visit(e) for e in node.elts]
+
+    def visit_Tuple(self, node):
+        return tuple(self.visit_List(node))
+
     @classmethod
     def evaluate(cls, expression):
         tree = ast.parse(expression)
@@ -130,7 +160,7 @@ def run(message):
         return r
     except ValueError as e:
         return "Error: {}".format(e)
-    except (MemoryError, RuntimeError):
+    except (MemoryError, RuntimeError, SyntaxError):
         return "How kawaii!\nAre you trying to be a cute loli hacker? nyan~"
     except multiprocessing.context.TimeoutError:
         return "Evaluation timeout."
