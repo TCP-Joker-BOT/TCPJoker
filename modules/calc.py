@@ -130,7 +130,7 @@ def run(message):
         return r
     except ValueError as e:
         return "Error: {}".format(e)
-    except MemoryError:
+    except MemoryError, RuntimeError:
         return "How kawaii!\nAre you trying to be a cute loli hacker? nyan~"
     except multiprocessing.context.TimeoutError:
         return "Evaluation timeout."
